@@ -3,6 +3,7 @@ package driver;
 // Import all apps
 import package_bmi.BMIApp;
 import package_exercise.ExerciseApp;
+import package_pharmacy.PharmacyApp;
  
 public final class Driver {
     public static void main(String[] args) {
@@ -14,7 +15,8 @@ public final class Driver {
             System.out.println();
             System.out.println("[1] BMI Calculator");
             System.out.println("[2] Exercise App");
-            System.out.println("[3] EXIT");
+            System.out.println("[3] Pharmacy App");
+            System.out.println("[4] EXIT");
             System.out.println();
     
             System.out.print("Enter your choice: ");
@@ -39,6 +41,9 @@ public final class Driver {
                     app = new ExerciseApp();
                     break;
                 case "3":
+                app = new PharmacyApp();
+                    break;
+                case "4":
                     break MainLoop;
                 default:
                     UI.printError("INVALID OPTION");
