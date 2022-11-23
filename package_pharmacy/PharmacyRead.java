@@ -11,6 +11,8 @@ class PharmacyRead extends PharmacyApp implements ReadData{
         }
         resetScreen();
 
+        // Offer user a word input to read data, entering nothing displays all
+
     }
     
 }

@@ -10,6 +10,8 @@ class PharmacyUpdate extends PharmacyApp implements ReadData{
         }
         resetScreen();
 
+        // Offer the user data output based on various column values (<,>,==, in case of numbers)
+
 
 
     }
