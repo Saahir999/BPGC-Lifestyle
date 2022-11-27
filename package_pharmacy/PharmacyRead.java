@@ -1,14 +1,9 @@
 package package_pharmacy;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Map;
 
 import driver.BackException;
 import driver.Helper;
 import driver.SafeInput;
-import driver.UI;
 
 
 class PharmacyRead extends PharmacyApp implements ReadData{
@@ -19,17 +14,8 @@ class PharmacyRead extends PharmacyApp implements ReadData{
      **/
     @Override
     public void readDrugs() throws BackException{
-        
-        HashMap<String,Integer> displayRestrictOrder = new HashMap<String,Integer>(); 
-        displayRestrictOrder.put("Name",-1);
-        displayRestrictOrder.put("Cost",-1);
-
 
         String name = "";
-        int traverse = 0;
-        ListIterator<Object> listIterator;
-        Iterator<String> iterator;
-        Iterator<Integer> dispIterator;
         ArrayList<Integer> index = new ArrayList<Integer>();
 
         // Check if data is null in temp storage 
@@ -53,44 +39,13 @@ class PharmacyRead extends PharmacyApp implements ReadData{
                 continue;
             }catch(NumberFormatException e){};
 
-            listIterator = data.get("0Name").listIterator();
-
-            if(name.isBlank()){
-                while(listIterator.hasNext()){
-                    listIterator.next();
-                    index.add(listIterator.previousIndex());     
-                }
-            }
-
-            while(listIterator.hasNext()){
-                if(name.equals(((String)listIterator.next()).toLowerCase())){
-                    index.add(listIterator.previousIndex());
-                    break;
-                }
-            }
+            index = searchMap(name, "0Name");
 
             resetScreen();
             System.out.println("The result(s) are");
 
-            iterator = data.keySet().iterator();
-            while(iterator.hasNext()){
-                System.out.print(iterator.next().substring(1)+"\t");               
-            }
+           display(index);
 
-            
-            dispIterator = index.iterator();
-            while(dispIterator.hasNext()){
-                int i = dispIterator.next();
-                iterator = data.keySet().iterator();
-                System.out.println();
-                while(iterator.hasNext()){
-                    String t = iterator.next();
-                    System.out.print(data.get(t).get(i)+"\t");               
-                }
-
-                System.out.println();
-            }
-            
             System.out.println("Enter any key to go back");
             SafeInput.waitForInput();
             return;
@@ -103,13 +58,5 @@ class PharmacyRead extends PharmacyApp implements ReadData{
                 Helper.sleep(30);
             }
         }
-
-        
-
-        
-
-        
-
-    }
-    
+    }   
 }

@@ -3,7 +3,7 @@ package package_pharmacy;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import java.util.ListIterator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,6 +21,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 public class PharmacyApp extends App{
+
+    /**
+     * It stores column headers as String keys with a integer as the 
+     * first character to indicate their order in the database
+     * Example :- Name column in database will be registered as 0Name here, the second
+     * column if named - say Cost will be stored as 1Cost and so on.
+     */
     protected HashMap<String,ArrayList<Object>> data = new HashMap<String,ArrayList<Object>>();
 
     @Override
@@ -74,6 +81,67 @@ public class PharmacyApp extends App{
         }
     }
 
+    /**
+     * 
+     * @param name Column header names in Excel database
+     * @param searchFor Column header names as present in data, refer to data
+     *  variable storage approach
+     * @return indexes of elements which match the search logic
+     */
+    protected ArrayList<Integer> searchMap(String name,String searchFor){
+        ListIterator<Object> listIterator = data.get(searchFor).listIterator();
+        ArrayList<Integer> index = new ArrayList<Integer>();
+
+            if(name.isBlank()){
+                while(listIterator.hasNext()){
+                    listIterator.next();
+                    index.add(listIterator.previousIndex());     
+                }
+            }
+
+            // else not needed as lisIterator is exhausted
+
+            while(listIterator.hasNext()){
+                if(name.equals(((String)listIterator.next()).toLowerCase())){
+                    index.add(listIterator.previousIndex());
+                    break;
+                }
+            }
+
+        return index;
+    }
+
+    /**
+     * @param index ArrayList<Integer>
+     * Displays the required data based on indexes passed
+     */
+    protected void display(final ArrayList<Integer> index){
+        Iterator<String> iterator;
+        Iterator<Integer> dispIterator;
+
+        iterator = data.keySet().iterator();
+            while(iterator.hasNext()){
+                System.out.print(iterator.next().substring(1)+"\t");               
+            }
+
+            
+            dispIterator = index.iterator();
+            while(dispIterator.hasNext()){
+                int i = dispIterator.next();
+                iterator = data.keySet().iterator();
+                System.out.println();
+                while(iterator.hasNext()){
+                    String t = iterator.next();
+                    System.out.print(data.get(t).get(i)+"\t");               
+                }
+
+                System.out.println();
+            }
+    }
+
+    /**
+     * Initialises the empty temporary copy of database in variable data
+     */
     protected void initialise(){
         try {
             FileInputStream file;
