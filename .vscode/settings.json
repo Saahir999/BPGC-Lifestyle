@@ -1,11 +1,15 @@
 {
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "d:\\BITS GOA\\3rd Year\\OOPS\\Lab Assignments\\poi-bin-5.2.3-20220909\\poi-bin-5.2.3\\lib\\commons-codec-1.15.jar",
-        "d:\\BITS GOA\\3rd Year\\OOPS\\Lab Assignments\\poi-bin-5.2.3-20220909\\poi-bin-5.2.3\\lib\\commons-collections4-4.4.jar",
-        "d:\\BITS GOA\\3rd Year\\OOPS\\Lab Assignments\\poi-bin-5.2.3-20220909\\poi-bin-5.2.3\\lib\\commons-io-2.11.0.jar",
-        "d:\\BITS GOA\\3rd Year\\OOPS\\Lab Assignments\\poi-bin-5.2.3-20220909\\poi-bin-5.2.3\\lib\\commons-math3-3.6.1.jar",
-        "d:\\BITS GOA\\3rd Year\\OOPS\\Lab Assignments\\poi-bin-5.2.3-20220909\\poi-bin-5.2.3\\lib\\log4j-api-2.18.0.jar",
-        "d:\\BITS GOA\\3rd Year\\OOPS\\Lab Assignments\\poi-bin-5.2.3-20220909\\poi-bin-5.2.3\\lib\\SparseBitSet-1.2.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar"
+        ],
+        "exclude": [
+            "lib/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-jul-2.19.0.jar",
+            "lib/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-1.2-api-2.19.0-javadoc.jar",
+            "lib/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-1.2-api-2.19.0.jar",
+            "lib/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-api-2.19.0.jar",
+            "lib/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-api-2.19.0-javadoc.jar",
+            "lib/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-jul-2.19.0-javadoc.jar"
+        ]
+    }
 }
