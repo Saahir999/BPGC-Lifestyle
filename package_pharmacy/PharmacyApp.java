@@ -216,12 +216,7 @@ public class PharmacyApp extends App{
                 }
             }
 
-            Iterator<Object> iterator = columnHead.iterator();
-            Iterator<ArrayList<Object>> iterator2 = contents.iterator();
-
-            while(iterator.hasNext()){
-                data.put((String) iterator.next(),iterator2.next());
-            }
+            setData(columnHead, contents);
 
             // System.out.println(data);
             // SafeInput.waitForInput();
@@ -233,4 +228,30 @@ public class PharmacyApp extends App{
             Helper.sleep(30);
         }
     }
+
+    /**
+     * It will set the value of the temporary data variable
+     * @param columnHead Names of column heads with order of appearance 
+     * recorded by placing a index before name of the header
+     * @param contents the ArrayList of ArrayList of values present in a column
+     */
+    protected void setData(ArrayList<Object> columnHead,
+    ArrayList<ArrayList<Object>> contents){
+        Iterator<Object> iterator = columnHead.iterator();
+            Iterator<ArrayList<Object>> iterator2 = contents.iterator();
+
+            while(iterator.hasNext()){
+                data.put((String) iterator.next(),iterator2.next());
+            }
+    }
+
+    /**
+     * Set the Excel database to the contents of data
+     * This will be a complete override of all data so do not forget 
+     * to use {@code intialise() } function
+     */
+    protected void updateDatabase(){
+
+    }
+
 }
