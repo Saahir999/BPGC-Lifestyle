@@ -43,9 +43,11 @@ class PharmacyRead extends PharmacyApp implements ReadData{
 
             resetScreen();
             System.out.println("The result(s) are");
+            System.out.println();
 
-           display(index);
-
+            display(index);
+            
+            System.out.println();
             System.out.println("Enter any key to go back");
             SafeInput.waitForInput();
             return;

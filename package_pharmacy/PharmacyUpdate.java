@@ -54,6 +54,10 @@ class PharmacyUpdate extends PharmacyApp implements ReadData{
             initialise();
         }
         resetScreen();
+        
+        // System.out.println(data);
+        // updateDatabase();
+        // System.out.println(data);
 
         while(true){
             try{
@@ -61,7 +65,7 @@ class PharmacyUpdate extends PharmacyApp implements ReadData{
 
 
             }catch(BackException e){
-
+                return;
             }catch(Exception e){
 
             }

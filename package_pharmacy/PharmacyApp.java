@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import driver.App;
@@ -39,6 +40,7 @@ public class PharmacyApp extends App{
     public void start() throws BackException{
 
         int c = 0;
+        int c2 = 0;
         PharmacyApp pharmacy;
 
         // Usage of super class is to maintain the "cache" the 
@@ -63,7 +65,33 @@ public class PharmacyApp extends App{
                 break;
                 case 2:
                     pharmacy = new PharmacyUpdate();
-                    
+                    UpdateLoop:while(true){
+                        resetScreen();
+                        try{
+                            System.out.println("[1] Scour drugs");
+                            System.out.println("[2] Add drugs");
+                            System.out.println("[3] Update drug");
+                            System.out.println("[4] EXIT");
+                            c2 = SafeInput.inputInteger();
+                            switch(c2){
+                                case 1:
+                                    ((PharmacyUpdate)pharmacy).readDrugs();
+                                break;
+                                case 2:
+                                    ((PharmacyUpdate)pharmacy).addDrugs();
+                                break;
+                                case 3:
+                                    ((PharmacyUpdate)pharmacy).updateData();
+                                break;
+                                case 4:
+                                break UpdateLoop;
+                                default :
+                                    continue;
+                            }
+                        }catch (BackException e){
+                            break;
+                        } 
+                    }
                 break;
                 case 3:
                     return;
@@ -89,6 +117,7 @@ public class PharmacyApp extends App{
      * @return indexes of elements which match the search logic
      */
     protected ArrayList<Integer> searchMap(String name,String searchFor){
+
         ListIterator<Object> listIterator = data.get(searchFor).listIterator();
         ArrayList<Integer> index = new ArrayList<Integer>();
 
@@ -154,9 +183,16 @@ public class PharmacyApp extends App{
             int orderIndex = 0;
 
             if(!f.exists()){
+                String[] sample = new String[]{"Name","Cost"};
                 FileOutputStream out = new FileOutputStream(f);
                 workbook = new XSSFWorkbook();
                 sheet = workbook.createSheet("Drugs");
+                for(Row r:sheet){
+                    int index = 0;
+                    for(Cell c:r){
+                        c.setCellValue(sample[index++]);
+                    }
+                }
                 workbook.write(out);
                 out.close();
             }
@@ -232,7 +268,8 @@ public class PharmacyApp extends App{
     /**
      * It will set the value of the temporary data variable
      * @param columnHead Names of column heads with order of appearance 
-     * recorded by placing a index before name of the header
+     * recorded by placing a index before name of the header ex. Name is 
+     * stored as 0Name if it is the first column and so on.
      * @param contents the ArrayList of ArrayList of values present in a column
      */
     protected void setData(ArrayList<Object> columnHead,
@@ -246,12 +283,95 @@ public class PharmacyApp extends App{
     }
 
     /**
+     * clears the contents of the database
+     */
+    protected void clearDatabase(){
+        try {
+            FileOutputStream out = new FileOutputStream(new
+             File("db/pharmacy/Read.xlsx"));
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            workbook.createSheet("Drugs");
+            workbook.write(out);
+            workbook.close();
+            out.close();
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Set the Excel database to the contents of data
-     * This will be a complete override of all data so do not forget 
+     * This will be a complete override of all data which overlaps with 
+     * temporary storage so do not forget 
      * to use {@code intialise() } function
      */
     protected void updateDatabase(){
+        try{
+            FileInputStream fileInputStream = new FileInputStream(new
+             File("db/pharmacy/Read.xlsx"));
+            XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            boolean header = true;
 
+            Iterator<String> columnIterator = data.keySet().iterator();
+            int k = sheet.getLastRowNum();
+            while(k>0){
+                for(Row r:sheet){
+                    int index = 0;
+                    if(header == true){
+                        for(Cell c:r){
+                            if(columnIterator.hasNext()){
+                                c.setCellValue(columnIterator.next().substring(1));
+                            }
+                            else{
+                                c.setBlank();
+                            }
+                        }
+                        header = false;
+                    }
+                    else{
+                        k--;
+                        Iterator<String> contentIterator = data.keySet().iterator();
+                        for(Cell c:r){
+                            if(contentIterator.hasNext()){
+                                String temp = contentIterator.next();
+                                if(data.get(temp).size()-index>=1){
+                                    Object datacell = data.get(temp).get(index++);
+                                    if(datacell.getClass().getSimpleName() == "Double"){
+                                        c.setCellValue((double)datacell);
+                                    }
+                                    else if(datacell.getClass().getSimpleName() == "Boolean"){
+                                        c.setCellValue((boolean)datacell);
+                                    }
+                                    else{
+                                        c.setCellValue((String)datacell);
+                                    }
+                                }
+                            }
+                            else{
+                                c.setBlank();
+                            }
+                        }
+                    }
+                    index = 0;
+                }
+            }
+
+            fileInputStream.close();
+
+            // Writing issue here
+            FileOutputStream out = new FileOutputStream(new File("db/pharmacy/Read.xlsx"));
+            workbook.write(out);
+            workbook.close();
+            out.close();
+        }catch(Exception e){
+            System.out.println("Error in Writing to database");
+            e.printStackTrace();
+            Helper.sleep(10);
+        }
     }
 
 }
