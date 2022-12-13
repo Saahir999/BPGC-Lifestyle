@@ -34,4 +34,20 @@ public final class Helper {
 
         return null;
     }
+
+    public static int arrayMaxLength(String[] arr) {
+        int max = 0;
+        for (int i = 0; i < arr.length; i++) {
+            max = Math.max(arr[i].length(), max);
+        }
+        return max;
+    }
+
+    public static int arrayMinLength(String[] arr) {
+        int min = 0;
+        for (int i = 0; i < arr.length; i++) {
+            min = Math.min(arr[i].length(), min);
+        }
+        return min;
+    }
 }

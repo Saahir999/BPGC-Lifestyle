@@ -5,6 +5,7 @@ public abstract class App {
 
     public final void resetScreen() {
         UI.resetScreen();
+        System.out.println();
         UI.printNavBar(this.getAppName());
     }
     
